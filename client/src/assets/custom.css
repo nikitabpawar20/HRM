@@ -1,7 +1,6 @@
 /* ======================================================
    GLOBAL VARIABLES
 ====================================================== */
-
 :root {
   --primary: #2563eb;
   --primary-dark: #1d4ed8;
@@ -263,7 +262,6 @@ body{
         display: none;
     }
 }
-
 
 .auth-logo{
     font-size:2rem;
@@ -754,7 +752,6 @@ display:none;
 .main-content{
 padding:20px;
 }
-
 }
 
 @media(max-width:768px){
@@ -780,5 +777,4 @@ height:auto;
 .topbar-search{
 display:none;
 }
-
 }
