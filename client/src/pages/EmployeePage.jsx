@@ -15,7 +15,7 @@ export default function EmployeePage() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:5000/api/users", {
+      const response = await fetch("https://hrm-server-x3ui.onrender.com/api/users", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -46,7 +46,7 @@ export default function EmployeePage() {
       const token = localStorage.getItem("token");
       
       const response = await fetch(
-        `http://localhost:5000/api/users/${id}/role`,
+        `https://hrm-server-x3ui.onrender.com/api/users/${id}/role`,
         {
           method: "PUT",
           headers: {
