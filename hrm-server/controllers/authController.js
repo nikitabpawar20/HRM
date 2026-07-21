@@ -5,7 +5,7 @@ const db = require("../config/db");
 // ================= REGISTER =================
 const register = async (req, res) => {
   try {
-    const { full_name, email, password } = req.body;
+    const {full_name,email,password,role = "Employee",} = req.body;
 
     // Validation
     if (!full_name || !email || !password) {
@@ -33,9 +33,9 @@ const register = async (req, res) => {
 
     // Insert User
     const [result] = await db.query(
-      `INSERT INTO users (full_name, email, password)
-       VALUES (?, ?, ?)`,
-      [full_name, email, hashedPassword]
+      `INSERT INTO users (full_name, email, password, role)
+      VALUES (?, ?, ?, ?)`,
+      [full_name, email, hashedPassword, role]
     );
 
     res.status(201).json({

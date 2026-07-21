@@ -15,11 +15,33 @@ CREATE TABLE users (
     full_name VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('HR','Reception','TeamLeader','Employee') DEFAULT 'HR',
+    role ENUM('Admin','HR','Manager','TeamLeader','Employee') DEFAULT 'Employee'
     status ENUM('Active','Inactive') DEFAULT 'Active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(50) UNIQUE NOT NULL,
+    role_description TEXT,
+    status ENUM('Active','Inactive') DEFAULT 'Active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO roles(role_name, role_description)
+VALUES
+('Admin','Full System Access'),
+('HR','Human Resource Management'),
+('Manager','Manage Teams'),
+('TeamLeader','Lead Team Members'),
+('Employee','Employee Access');
+
 UPDATE users
 SET role = 'Employee'
 WHERE email = 'your_email@example.com';
+
+'''========================================='''
+
+UPDATE users
+SET role = 'Employee'
+WHERE id = 2;

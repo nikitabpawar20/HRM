@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
+import { ROLES } from "../utils/roles";
+
 import {
   FiGrid,
   FiUsers,
@@ -10,6 +13,7 @@ import {
   FiSettings,
   FiLogOut,
 } from "react-icons/fi";
+
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 
 const allMenuItems = [
@@ -17,49 +21,74 @@ const allMenuItems = [
     label: "Dashboard",
     path: "/dashboard",
     icon: <FiGrid />,
-    roles: ["HR", "Reception", "TeamLeader", "Employee"],
+    roles: [
+      ROLES.ADMIN,
+      ROLES.HR,
+      ROLES.MANAGER,
+      ROLES.TEAM_LEADER,
+      ROLES.EMPLOYEE,
+    ],
   },
+
   {
     label: "Department",
     path: "/departments",
     icon: <HiOutlineOfficeBuilding />,
-    roles: ["HR"],
+    roles: [ROLES.ADMIN, ROLES.HR],
   },
+
   {
     label: "Employee",
     path: "/employee",
     icon: <FiUsers />,
-    roles: ["HR", "Reception", "TeamLeader"],
+    roles: [ROLES.ADMIN],
   },
+
   {
     label: "Attendance",
     path: "/attendance",
     icon: <FiClock />,
-    roles: ["HR", "Reception", "TeamLeader", "Employee"],
+    roles: [
+      ROLES.ADMIN,
+      ROLES.HR,
+      ROLES.MANAGER,
+      ROLES.TEAM_LEADER,
+      ROLES.EMPLOYEE,
+    ],
   },
+
   {
     label: "Leave",
     path: "/leave",
     icon: <FiCalendar />,
-    roles: ["HR", "TeamLeader", "Employee"],
+    roles: [
+      ROLES.ADMIN,
+      ROLES.HR,
+      ROLES.MANAGER,
+      ROLES.TEAM_LEADER,
+      ROLES.EMPLOYEE,
+    ],
   },
+
   {
     label: "Payroll",
     path: "/payroll",
     icon: <FiDollarSign />,
-    roles: ["HR"],
+    roles: [ROLES.ADMIN, ROLES.HR, ROLES.MANAGER, ROLES.EMPLOYEE],
   },
+
   {
     label: "Reports",
     path: "/reports",
     icon: <FiBarChart2 />,
-    roles: ["HR"],
+    roles: [ROLES.ADMIN, ROLES.HR, ROLES.MANAGER],
   },
+
   {
     label: "Settings",
     path: "/settings",
     icon: <FiSettings />,
-    roles: ["HR"],
+    roles: [ROLES.ADMIN],
   },
 ];
 
@@ -67,18 +96,17 @@ export default function Sidebar({ collapsed }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const role = user?.role || "Employee";
+  const { user, logout } = useContext(AuthContext);
+
+  const role = user?.role || ROLES.EMPLOYEE;
 
   const menuItems = allMenuItems.filter((item) =>
     item.roles.includes(role)
   );
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-
-    navigate("/login");
+    logout();
+    navigate("/auth");
   };
 
   return (
@@ -86,7 +114,7 @@ export default function Sidebar({ collapsed }) {
       <ul className="sidebar-menu">
         {menuItems.map((item) => (
           <li
-            key={item.label}
+            key={item.path}
             className={`sidebar-item ${
               location.pathname === item.path ? "active" : ""
             }`}

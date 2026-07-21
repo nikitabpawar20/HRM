@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import AuthContext from "../context/AuthContext";
 
 export default function Login({ switchForm }) {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -38,11 +40,7 @@ export default function Login({ switchForm }) {
       const result = await response.json();
 
       if (result.success) {
-        // Save Token
-        localStorage.setItem("token", result.token);
-
-        // Save User Data
-        localStorage.setItem("user", JSON.stringify(result.user));
+        login(result.user, result.token);
 
         alert("Login Successful!");
 

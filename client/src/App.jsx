@@ -5,10 +5,12 @@ import "./assets/custom.css";
 
 import AuthPage from "./pages/AuthPage";
 import DepartmentPage from "./pages/DepartmentPage";
+import EmployeePage from "./pages/EmployeePage";
 
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import PrivateRoute from "./components/PrivateRoute";
+import RoleRoute from "./components/RoleRoute";
 
 function PlaceholderPage({ title }) {
   return (
@@ -34,7 +36,7 @@ function DashboardLayout() {
         return <DepartmentPage />;
 
       case "/employee":
-        return <PlaceholderPage title="Employee" />;
+        return <EmployeePage />;
 
       case "/attendance":
         return <PlaceholderPage title="Attendance" />;
@@ -74,9 +76,10 @@ function DashboardLayout() {
 export default function App() {
   return (
     <Routes>
-      {/* Public Routes */}
+      {/* Public Route */}
       <Route path="/auth" element={<AuthPage />} />
-      {/* Protected Routes */}
+
+      {/* Dashboard - All Logged In Users */}
       <Route
         path="/dashboard"
         element={
@@ -86,65 +89,86 @@ export default function App() {
         }
       />
 
+      {/* Department - Admin & HR Only */}
       <Route
         path="/departments"
         element={
           <PrivateRoute>
-            <DashboardLayout />
+            <RoleRoute allowedRoles={["Admin", "HR"]}>
+              <DashboardLayout />
+            </RoleRoute>
           </PrivateRoute>
         }
       />
 
+      {/* Employee */}
       <Route
         path="/employee"
         element={
           <PrivateRoute>
-            <DashboardLayout />
+            <RoleRoute allowedRoles={["Admin", "HR", "Manager"]}>
+              <DashboardLayout />
+            </RoleRoute>
           </PrivateRoute>
         }
       />
 
+      {/* Attendance */}
       <Route
         path="/attendance"
         element={
           <PrivateRoute>
-            <DashboardLayout />
+            <RoleRoute allowedRoles={["Admin", "HR", "Manager", "TeamLeader", "Employee",]}>
+              <DashboardLayout />
+            </RoleRoute>
           </PrivateRoute>
         }
       />
 
+      {/* Leave */}
       <Route
         path="/leave"
         element={
           <PrivateRoute>
-            <DashboardLayout />
+            <RoleRoute allowedRoles={["Admin","HR","Manager","TeamLeader","Employee"]}>
+              <DashboardLayout />
+            </RoleRoute>
           </PrivateRoute>
         }
       />
 
+      {/* Payroll */}
       <Route
         path="/payroll"
         element={
           <PrivateRoute>
-            <DashboardLayout />
+            <RoleRoute allowedRoles={["Admin", "HR", "Employee"]}>
+              <DashboardLayout />
+            </RoleRoute>
           </PrivateRoute>
         }
       />
 
+      {/* Reports */}
       <Route
         path="/reports"
         element={
           <PrivateRoute>
-            <DashboardLayout />
+            <RoleRoute allowedRoles={["Admin", "HR", "Manager"]}>
+              <DashboardLayout />
+            </RoleRoute>
           </PrivateRoute>
         }
       />
 
+      {/* Settings */}
       <Route
         path="/settings"
         element={
           <PrivateRoute>
-            <DashboardLayout />
+            <RoleRoute allowedRoles={["Admin"]}>
+              <DashboardLayout />
+            </RoleRoute>
           </PrivateRoute>
         }
       />
@@ -152,7 +176,7 @@ export default function App() {
       {/* Default Route */}
       <Route path="/" element={<Navigate to="/auth" replace />} />
 
-      {/* Unknown Routes */}
+      {/* Invalid Routes */}
       <Route path="*" element={<Navigate to="/auth" replace />} />
     </Routes>
   );

@@ -5,6 +5,7 @@ console.log("JWT_SECRET =", process.env.JWT_SECRET);
 
 const departmentRoutes = require("./routes/departmentRoutes");
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => res.json({ message: "Vibgyor Advicorp API is running 🚀" }));
 app.use("/api/departments", departmentRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 // ── 404 Handler ──────────────────────────────────────
 app.use((req, res) => {
